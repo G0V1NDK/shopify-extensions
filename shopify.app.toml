@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = ""
-application_url = "https://example.com/"
+client_id = "0a6ea062f34d7b8855ad362ee69b859e"
+application_url = "https://zone-salem-alleged-istanbul.trycloudflare.com"
 embedded = true
-name = "HotWax Shelf Label POS"
+name = "Print shelf label"
 handle = "hotwax-shelf-label-pos"
 
 [webhooks]
@@ -19,10 +19,14 @@ api_version = "2025-07"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = "read_products,write_products"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = ["https://zone-salem-alleged-istanbul.trycloudflare.com/auth/callback", "https://zone-salem-alleged-istanbul.trycloudflare.com/auth/shopify/callback", "https://zone-salem-alleged-istanbul.trycloudflare.com/api/auth/callback"]
 
 [pos]
 embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
