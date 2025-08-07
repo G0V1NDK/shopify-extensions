@@ -23,8 +23,7 @@ const Modal = () => {
     setUrl("");
     setIsLoading(true);
     setError("");
-    console.log("API product:", api.product);
-    const baseUrl = "https://zone-salem-alleged-istanbul.trycloudflare.com";
+    const baseUrl = process.env.SHOPIFY_APP_URL;
     const productId = api.product.id;
     const variantId = api.product.variantId;
     if (!variantId) {
@@ -35,7 +34,6 @@ const Modal = () => {
       return;
     }
     const newUrl = `${baseUrl}/print?productId=${encodeURIComponent(productId)}&variantId=${encodeURIComponent(variantId)}&labelType=${encodeURIComponent(selected)}`;
-    console.log("Print URL:", newUrl);
     setUrl(newUrl);
   };
 
@@ -44,8 +42,7 @@ const Modal = () => {
       if (url && isLoading) {
         setIsLoading(true);
         try {
-          setTimeout(() => {api.print.print(url)}, 1000); // Simulate a delay for printing
-          // await api.print.print(url);
+          setTimeout(() => {api.print.print(url)}, 1000); // Delay to ensure the URL is set before printing
           api.toast.show("Previewing label...");
         } catch (error) {
           console.error("Print failed:", error);
@@ -63,7 +60,6 @@ const Modal = () => {
     <Navigator>
       <Screen name="ProductDetails" title="Select Label Type">
         <ScrollView>
-          <Text>{`Product ID: ${api.product.id}`}</Text>
           <Button
             title="Print"
             type="primary"
@@ -76,7 +72,7 @@ const Modal = () => {
             onItemSelected={setSelected}
             initialSelectedItem={selected}
           />
-          {error && <Text>{error}</Text>}
+          {/* {error && <Text>{error}</Text>} */}
         </ScrollView>
       </Screen>
     </Navigator>

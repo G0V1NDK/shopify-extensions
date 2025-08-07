@@ -1,32 +1,25 @@
 import { authenticate } from '../shopify.server';
 
 export async function loader({ request }) {
-  console.log('------------------ Print loader called ------------------');
-  console.log('=== Received request for /print:', request.url);
-  const { cors, admin } = await authenticate.admin(request);
+  const { cors } = await authenticate.admin(request);
   const url = new URL(request.url);
   const productId = url.searchParams.get('productId');
   const variantId = url.searchParams.get('variantId');
   const labelType = url.searchParams.get('labelType');
 
-  console.log('=== Parameters:', { productId, variantId, labelType });
-
   if (!productId || !variantId || !labelType) {
-    console.log('=== Missing parameters:', { productId, variantId, labelType });
     return cors(new Response('Missing parameters', { status: 400 }));
   }
 
   try {
     const { productVariant, shop } = await getProductDetails(variantId, request);
-    console.log('=== Product details fetched:', productVariant);
 
     if (!productVariant || !productVariant.product) {
-      console.log('=== Product or variant not found:', { productId, variantId });
+      console.log('Product or variant not found:', { productId, variantId });
       return cors(new Response('Product or variant not found', { status: 404 }));
     }
 
     const shopName = shop?.name;
-    console.log('=== Shop name:', shopName);
 
     let html = '';
     switch (labelType) {
@@ -40,11 +33,10 @@ export async function loader({ request }) {
         html = generateRegularPriceLabel(productVariant, shopName);
         break;
       default:
-        console.log('=== Invalid label type:', labelType);
+        console.log('Invalid label type:', labelType);
         return cors(new Response('Invalid label type', { status: 400 }));
     }
 
-    console.log('=== Returning HTML for label:', labelType);
     return cors(
       new Response(html, {
         headers: { 'Content-Type': 'text/html' },
@@ -53,7 +45,7 @@ export async function loader({ request }) {
       })
     );
   } catch (error) {
-    console.error('=== Error generating label:', error.message, error.stack);
+    console.error('Error generating label:', error.message, error.stack);
     return cors(new Response(`Error generating label: ${error.message}`, { status: 500 }));
   }
 }
@@ -95,7 +87,7 @@ async function getProductDetails(variantId, request) {
     const data = await response.json();
 
     if (data.errors) {
-      console.error('=== GraphQL errors:', data.errors);
+      console.error('GraphQL errors:', data.errors);
       throw new Error('GraphQL query failed');
     }
 
@@ -104,7 +96,7 @@ async function getProductDetails(variantId, request) {
       shop: data.data.shop,
     };
   } catch (error) {
-    console.error('=== Error getting product details:', error.message, error.stack);
+    console.error('Error getting product details:', error.message, error.stack);
     throw error;
   }
 }
@@ -113,8 +105,6 @@ function generateUPCLabel(productVariant) {
   const color = productVariant?.selectedOptions.find(option => option.name === 'Color')?.value || 'NA';
   const size = productVariant?.selectedOptions.find(option => option.name === 'Size')?.value || 'NA';
   const upc = productVariant?.barcode || 'NA';
-
-  console.log('=== Generating UPC label for variant:', productVariant);
 
   return `
     <!DOCTYPE html>
@@ -204,7 +194,6 @@ function generatePromoTag(productVariant, shopName) {
   //   `;
   // }
   // const color = productVariant.selectedOptions.find(option => option.name === 'Color')?.value || 'NA';
-  console.log('=== Generating Promo Tag for variant:', productVariant);
 
   return `
         <!DOCTYPE html>
@@ -298,8 +287,7 @@ function generatePromoTag(productVariant, shopName) {
 }
 
 function generateRegularPriceLabel(productVariant, shopName) {
-  const color = productVariant.selectedOptions.find(option => option.name === 'Color')?.value || 'NA';
-  console.log('=== Generating Regular Price Label for variant:', productVariant);
+  // const color = productVariant.selectedOptions.find(option => option.name === 'Color')?.value || 'NA';
 
   return `
   <!DOCTYPE html>

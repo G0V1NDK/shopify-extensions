@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "0a6ea062f34d7b8855ad362ee69b859e"
-application_url = "https://zone-salem-alleged-istanbul.trycloudflare.com"
+application_url = "https://compliant-css-proof-minutes.trycloudflare.com"
 embedded = true
 name = "Print shelf label"
 handle = "hotwax-shelf-label-pos"
@@ -22,7 +22,7 @@ api_version = "2025-07"
 scopes = "read_products,write_products"
 
 [auth]
-redirect_urls = ["https://zone-salem-alleged-istanbul.trycloudflare.com/auth/callback", "https://zone-salem-alleged-istanbul.trycloudflare.com/auth/shopify/callback", "https://zone-salem-alleged-istanbul.trycloudflare.com/api/auth/callback"]
+redirect_urls = ["https://compliant-css-proof-minutes.trycloudflare.com/auth/callback", "https://compliant-css-proof-minutes.trycloudflare.com/auth/shopify/callback", "https://compliant-css-proof-minutes.trycloudflare.com/api/auth/callback"]
 
 [pos]
 embedded = false
