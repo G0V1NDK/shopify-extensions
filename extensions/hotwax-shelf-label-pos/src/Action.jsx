@@ -23,7 +23,7 @@ const Modal = () => {
     setUrl("");
     setIsLoading(true);
     setError("");
-    const baseUrl = "https://hotwax-shopify-shelf-label-pos.firebaseapp.com";
+    const baseUrl = "https://hotwax-shopify-shelf-label-pos.hotwax.io";
     const productId = api.product.id;
     const variantId = api.product.variantId;
     if (!variantId) {
