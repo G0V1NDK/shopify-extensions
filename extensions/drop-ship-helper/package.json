@@ -1,0 +1,17 @@
+{
+  "name": "drop-ship-helper",
+  "private": true,
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@shopify/retail-ui-extensions": "^1.5.0",
+    "@shopify/retail-ui-extensions-react": "^1.5.0",
+    "preact": "^10.29.2",
+    "react": "npm:@preact/compat@^18.3.2",
+    "react-dom": "npm:@preact/compat@^18.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3"
+  }
+}
