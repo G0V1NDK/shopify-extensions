@@ -4,11 +4,12 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "dependencies": {
-    "@shopify/retail-ui-extensions": "^1.5.0",
-    "@shopify/retail-ui-extensions-react": "^1.5.0",
-    "preact": "^10.29.2",
+    "@shopify/ui-extensions": "2026.4.0",
+    "@shopify/ui-extensions-react": "2026.0.0",
     "react": "npm:@preact/compat@^18.3.2",
-    "react-dom": "npm:@preact/compat@^18.3.2"
+    "react-dom": "npm:@preact/compat@^18.3.2",
+    "preact": "^10.29.2",
+    "@remote-ui/react": "4.5.14"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",

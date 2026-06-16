@@ -4,7 +4,7 @@ api_version = "2026-04"
 type = "ui_extension"
 name = "Drop Ship Attribution"
 handle = "drop-ship-attribution"
-description = "Attribute fulfillment source and Transfer Order ID for drop ship orders"
+description = "Drop Ship Attribution"
 uid = "607e6f63-c896-f55f-b44b-6ee09037ca67c1771eba"
 
 # Menu Item Target
