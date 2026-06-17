@@ -25,18 +25,13 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
 
   // Helper to programmatically close the modal
   const dismissModal = () => {
-    if (activeApi?.navigation) {
-      if (activeApi.navigation.close) {
-        activeApi.navigation.close();
-      } else if (activeApi.navigation.dismiss) {
-        activeApi.navigation.dismiss();
-      }
-    } else if (typeof shopify !== 'undefined' && shopify.navigation) {
-      if (shopify.navigation.close) {
-        shopify.navigation.close();
-      } else if (shopify.navigation.dismiss) {
-        shopify.navigation.dismiss();
-      }
+    // @ts-ignore
+    if (typeof window !== 'undefined' && typeof window.close === 'function') {
+      // @ts-ignore
+      window.close();
+    } else {
+      // @ts-ignore
+      close();
     }
   };
 
@@ -58,15 +53,12 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
   };
 
   const onCompleteAssignment = async () => {
-    // console.log("Selected: Complete Assignment with ID:", transferOrderId);
-    
     if (lineItem?.uuid) {
       try {
         if (activeApi?.cart?.addLineItemProperties) {
           await activeApi.cart.addLineItemProperties(lineItem.uuid, {
             hc_transfer_order_id: transferOrderId
           });
-          // console.log("Successfully added line item property hc_transfer_order_id:", transferOrderId);
         } else {
           console.warn("addLineItemProperties method not available on activeApi.cart");
         }
