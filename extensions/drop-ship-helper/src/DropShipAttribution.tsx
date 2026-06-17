@@ -94,13 +94,18 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
           {/* @ts-ignore */}
           <s-scroll-view>
             {/* @ts-ignore */}
-            <s-stack direction="vertical" spacing="4">
+            <s-stack direction="vertical" spacing="4" gap="large-100">
               
               {quantity != null && (
                 /* @ts-ignore */
-                <s-text tone="subdued">
-                  {`Attributing ${quantity} ${quantity === 1 ? 'item' : 'items'}`}
-                </s-text>
+                <s-stack direction="vertical" spacing="1" alignItems="center">
+                  {/* @ts-ignore */}
+                  <s-text tone="subdued">
+                    {`Attributing ${quantity} ${quantity === 1 ? 'item' : 'items'}`}
+                    {/* @ts-ignore */}
+                  </s-text>
+                  {/* @ts-ignore */}
+                </s-stack>
               )}
 
               {/* <s-clickable onClick={onFulfillFromAnotherStore}>
@@ -143,12 +148,12 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
           {/* @ts-ignore */}
           <s-scroll-view>
             {/* @ts-ignore */}
-            <s-stack direction="vertical" spacing="4">
+            <s-stack direction="vertical" gap="large-100" alignItems="center">
 
               {/* @ts-ignore */}
-              <s-stack direction="vertical" spacing="1">
+              <s-stack direction="vertical" spacing="1" alignItems="left">
                 {/* @ts-ignore */}
-                <s-text tone="subdued">
+                <s-text tone="subdued" type="strong" >
                   Type: {/* @ts-ignore */}
                   <s-text emphasis>Drop Ship</s-text>
                 {/* @ts-ignore */}
@@ -164,7 +169,7 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
               {/* @ts-ignore */}
               <s-text-field
                 label="Enter Transfer Order ID"
-                placeholder="e.g., TO-2026-05-001"
+                placeholder="e.g., TO202605"
                 value={transferOrderId}
                 onInput={(e: any) => setTransferOrderId(e.target.value)}
                 details="This ID will be used to track the internal transfer order"
