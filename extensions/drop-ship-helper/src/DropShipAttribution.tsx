@@ -6,15 +6,17 @@ interface DropShipAttributionProps {
 }
 
 /**
- * Drop Ship Attribution main component.
- * Manages routing between the fulfillment method selection and the Transfer Order ID input screens.
+ * Select Fulfillment Method screen.
+ * Displays the product details of the line item being attributed,
+ * and allows selecting between "Fulfill from Another Store" and
+ * "Fulfill from Warehouse".
  */
 const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
   // Use passed api object or fallback to global shopify object
   const activeApi = api || (typeof shopify !== 'undefined' ? shopify : null);
   const lineItem = activeApi?.cartLineItem;
 
-  const quantity = lineItem?.quantity || 1;
+  const quantity = lineItem?.quantity;
 
   // Screen routing state
   const [currentScreen, setCurrentScreen] = useState<'select' | 'input'>('select');
@@ -55,8 +57,26 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
     dismissModal();
   };
 
-  const onCompleteAssignment = () => {
-    console.log("Selected: Complete Assignment with ID:", transferOrderId);
+  const onCompleteAssignment = async () => {
+    // console.log("Selected: Complete Assignment with ID:", transferOrderId);
+    
+    if (lineItem?.uuid) {
+      try {
+        if (activeApi?.cart?.addLineItemProperties) {
+          await activeApi.cart.addLineItemProperties(lineItem.uuid, {
+            hc_transfer_order_id: transferOrderId
+          });
+          // console.log("Successfully added line item property hc_transfer_order_id:", transferOrderId);
+        } else {
+          console.warn("addLineItemProperties method not available on activeApi.cart");
+        }
+      } catch (error) {
+        console.error("Failed to add line item property:", error);
+      }
+    } else {
+      console.warn("No active lineItem or lineItem.uuid found to apply properties");
+    }
+
     // @ts-ignore
     if (typeof shopify !== 'undefined' && shopify.toast) {
       // @ts-ignore
@@ -80,10 +100,17 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
                 /* @ts-ignore */
                 <s-text tone="subdued">
                   {`Attributing ${quantity} ${quantity === 1 ? 'item' : 'items'}`}
-                {/* @ts-ignore */}
                 </s-text>
               )}
 
+              {/* <s-clickable onClick={onFulfillFromAnotherStore}>
+                <s-box padding="base" background="subdued" borderRadius="base" border="base">
+                  <s-stack direction="vertical" spacing="1">
+                    <s-text emphasis>Fulfill from Another Store</s-text>
+                    <s-text tone="subdued">Ship directly from a different store</s-text>
+                  </s-stack>
+                </s-box>
+              </s-clickable> */}
               {/* @ts-ignore */}
               <s-stack direction="inline" justifyContent="center">
                 {/* @ts-ignore */}
