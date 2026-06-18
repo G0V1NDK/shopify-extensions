@@ -17,11 +17,12 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
   const lineItem = activeApi?.cartLineItem;
 
   const quantity = lineItem?.quantity;
+  const existingTransferOrderId = lineItem?.properties?.hc_transfer_order_id;
 
   // Screen routing state
   const [currentScreen, setCurrentScreen] = useState<'select' | 'input'>('select');
   // Input state for Transfer Order ID
-  const [transferOrderId, setTransferOrderId] = useState('');
+  const [transferOrderId, setTransferOrderId] = useState(existingTransferOrderId || '');
 
   // Helper to programmatically close the modal
   const dismissModal = () => {
@@ -77,6 +78,27 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
     dismissModal();
   };
 
+  const onRemoveAttribution = async () => {
+    if (lineItem?.uuid) {
+      try {
+        if (activeApi?.cart?.removeLineItemProperties) {
+          await activeApi.cart.removeLineItemProperties(lineItem.uuid, ['hc_transfer_order_id']);
+        } else {
+          console.warn("removeLineItemProperties method not available on activeApi.cart");
+        }
+      } catch (error) {
+        console.error("Failed to remove line item property:", error);
+      }
+    }
+
+    // @ts-ignore
+    if (typeof shopify !== 'undefined' && shopify.toast) {
+      // @ts-ignore
+      shopify.toast.show("Attribution cleared");
+    }
+    dismissModal();
+  };
+
   return (
     // @ts-ignore
     <s-navigator>
@@ -87,46 +109,46 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
           <s-scroll-view>
             {/* @ts-ignore */}
             <s-stack direction="vertical" spacing="4" gap="large-100">
-              
-              {quantity != null && (
+              {existingTransferOrderId && (
                 /* @ts-ignore */
                 <s-stack direction="vertical" spacing="1" alignItems="center">
                   {/* @ts-ignore */}
                   <s-text tone="subdued">
-                    {`Attributing ${quantity} ${quantity === 1 ? 'item' : 'items'}`}
-                    {/* @ts-ignore */}
-                  </s-text>
+                    Current Transfer Order ID: {/* @ts-ignore */}
+                    <s-text emphasis>{existingTransferOrderId}</s-text>
                   {/* @ts-ignore */}
+                  </s-text>
+                {/* @ts-ignore */}
                 </s-stack>
               )}
 
-              {/* <s-clickable onClick={onFulfillFromAnotherStore}>
-                <s-box padding="base" background="subdued" borderRadius="base" border="base">
-                  <s-stack direction="vertical" spacing="1">
-                    <s-text emphasis>Fulfill from Another Store</s-text>
-                    <s-text tone="subdued">Ship directly from a different store</s-text>
-                  </s-stack>
-                </s-box>
-              </s-clickable> */}
               {/* @ts-ignore */}
               <s-stack direction="inline" justifyContent="center">
                 {/* @ts-ignore */}
                 <s-button onClick={onFulfillFromAnotherStore} variant="primary">
-                  Fulfill from Another Store
+                  {existingTransferOrderId ? "Edit Transfer Order ID" : "Fulfill from Another Store"}
                 {/* @ts-ignore */}
                 </s-button>
               {/* @ts-ignore */}
               </s-stack>
-
-              {/* @ts-ignore */}
-              <s-stack direction="inline" justifyContent="center">
-                {/* @ts-ignore */}
+              {/* Need to find usecase for "Fulfillment from Warehousefuture" */}
+              {/* <s-stack direction="inline" justifyContent="center">
                 <s-button onClick={onFulfillFromWarehouse}>
                   Fulfill from Warehouse
-                {/* @ts-ignore */}
                 </s-button>
-              {/* @ts-ignore */}
-              </s-stack>
+              </s-stack> */}
+               
+              {existingTransferOrderId && (
+                /* @ts-ignore */
+                <s-stack direction="inline" justifyContent="center">
+                  {/* @ts-ignore */}
+                  <s-button onClick={onRemoveAttribution} tone="critical">
+                    Clear Attribution
+                  {/* @ts-ignore */}
+                  </s-button>
+                {/* @ts-ignore */}
+                </s-stack>
+              )}
 
             {/* @ts-ignore */}
             </s-stack>
@@ -164,7 +186,7 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
                 placeholder="e.g., TO202605"
                 value={transferOrderId}
                 onInput={(e: any) => setTransferOrderId(e.target.value)}
-                details="This ID will be used to track the internal transfer order"
+                details="This ID will be used to track the linked transfer order"
               />
 
               {/* @ts-ignore */}
