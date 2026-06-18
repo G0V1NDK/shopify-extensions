@@ -106,9 +106,9 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
         // @ts-ignore
         <s-screen name="SelectFulfillmentMethod" title="Select Fulfillment Method">
           {/* @ts-ignore */}
-          <s-scroll-view>
+          <s-scroll-view blockSize="100%">
             {/* @ts-ignore */}
-            <s-stack direction="vertical" gap="large-100" alignItems="center">
+            <s-stack direction="vertical" gap="large-100" alignItems="center" justifyContent="center" blockSize="75%">
               {/* @ts-ignore */}
               <s-box inlineSize="50%">
                 {/* @ts-ignore */}
@@ -153,9 +153,9 @@ const DropShipAttribution = ({ api }: DropShipAttributionProps) => {
         // @ts-ignore
         <s-screen name="TransferOrderId" title="Transfer Order ID">
           {/* @ts-ignore */}
-          <s-scroll-view>
+          <s-scroll-view blockSize="100%">
             {/* @ts-ignore */}
-            <s-stack direction="vertical" gap="large-100" alignItems="center">
+            <s-stack direction="vertical" gap="large-100" alignItems="center" justifyContent="center" blockSize="75%">
               {/* @ts-ignore */}
               <s-box inlineSize="50%">
                 {/* @ts-ignore */}
